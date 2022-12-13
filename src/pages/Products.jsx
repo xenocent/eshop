@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react';
 import Axios from 'axios';
 import { API_URL } from "./../helper/utils";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { updateAction } from "./../actions/productAction"
+import { getProductAction, updateAction } from "./../actions/productAction"
 function Products() {
     // const [listProduct,setListProduct] = useState([])
     const { listProduct } = useSelector(({productReducer})=>{
@@ -12,6 +12,7 @@ function Products() {
         }
     })
     const dispatch = useDispatch();
+    // eslint-disable-next-line
     const onLoadProduct = ()=>{
         Axios.get(API_URL+`/products`)    
             .then((res)=>{             
@@ -39,7 +40,8 @@ function Products() {
     
 
     useEffect(()=>{
-        onLoadProduct()
+        // onLoadProduct()
+        dispatch(getProductAction());
         // eslint-disable-next-line
     },[])
 
