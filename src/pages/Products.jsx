@@ -4,6 +4,8 @@ import Axios from 'axios';
 import { API_URL } from "./../helper/utils";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { getProductAction, updateAction } from "./../actions/productAction"
+import { useNavigate } from 'react-router-dom';
+
 function Products() {
     // const [listProduct,setListProduct] = useState([])
     const { listProduct } = useSelector(({productReducer})=>{
@@ -12,6 +14,8 @@ function Products() {
         }
     })
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    
     // eslint-disable-next-line
     const onLoadProduct = ()=>{
         Axios.get(API_URL+`/products`)    
@@ -26,8 +30,8 @@ function Products() {
     }
 
     const printData= ()=>
-        listProduct.map((product)=>{
-            return <WrapItem key={product.id}>
+        listProduct?.map((product)=>{
+            return <WrapItem key={product.id} onClick={()=>navigate(`/detail?id=${product.id}`,{state:{productId:product.id}})}>
                 <Box display={"flex"} flexDirection={"column"} justifyContent={'center'} shadow={"2xl"} m={2}>
                     <Image src={product.images} height={300} width={300}/>
                     <Center p={5} as={'button'} display={"flex"} flexDirection={'column'} background={"teal"} color={"white"}>
