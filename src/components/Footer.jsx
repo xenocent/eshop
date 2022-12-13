@@ -1,8 +1,6 @@
 import React from 'react';
 import {Text, Button, Hide,Show} from '@chakra-ui/react';
 import { AiFillFacebook,AiFillInstagram,AiFillTwitterCircle,AiFillCopyrightCircle } from 'react-icons/ai';
-import { Divider } from '@chakra-ui/react'
-
 
 const Footer = (props) =>{
     return <footer  >

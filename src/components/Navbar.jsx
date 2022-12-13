@@ -1,48 +1,71 @@
 import React from 'react';
-import { Button,ButtonGroup } from '@chakra-ui/react';
+import { Button,ButtonGroup, Menu, MenuButton, MenuItem, MenuList, MenuGroup, Spinner } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux"; // mengambil data dari reducer
+import { logoutAction } from '../actions/userAction';
+import {useDispatch} from 'react-redux'
 
 const Navbar = (props) =>{
-    return <nav className="navbar navbar-expand-lg bg-light">
+    const { username } = useSelector((state)=>{
+        return {
+            username:state.userReducer.username
+        }
+    })
+
+    const dispatch = useDispatch();
+
+    return <nav className="navbar navbar-expand-lg bg-light" style={{minHeight:"100px"}}>
         <div className="container">
             <Link to='/'>
-                <span className='fw-bold'>
+                <span className='fw-bold' style={{padding:'10px'}}>
                     E-SHOP
                 </span>
             </Link>
+            
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                        <a className="nav-link active" aria-current="page" href="#">Home</a>
+                        <Link to='/products'>
+                            <button className="nav-link" >Products</button>
+                        </Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Link</a>
+                        <button className="nav-link" >Link</button>
                     </li>
                     <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul className="dropdown-menu">
-                            <li><a className="dropdown-item" href="#">Action</a></li>
-                            <li><a className="dropdown-item" href="#">Another action</a></li>
-                            <li><hr className="dropdown-divider" /></li>
-                            <li><a className="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                        
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link disabled">Disabled</a>
+                        <button className="nav-link disabled">Disabled</button>
                     </li>
                 </ul>
                 <form className="d-flex" role="search">
-                    <ButtonGroup>
-                        <Link to='/login'>
-                            <Button type='button' colorScheme='teal' variant='solid'>Login</Button>
-                        </Link>
-                        <Button type='button' colorScheme='teal' variant='outline'>Register</Button>
-                    </ButtonGroup>
+                    {
+                        props.loading? <Spinner/> :username && !props.loading?
+                        <Menu>
+                            <MenuButton as={Button} colorScheme='pink'>
+                                {username}
+                            </MenuButton>
+                            <MenuList>
+                                <MenuGroup>
+                                    <MenuItem>Cart</MenuItem>
+                                    <MenuItem onClick={()=>dispatch(logoutAction(null))}>Logout</MenuItem>
+                                </MenuGroup>
+                            </MenuList>
+                        </Menu>
+                        :
+                        <ButtonGroup>
+                            <Link to='/login'>
+                                <Button type='button' colorScheme='teal' variant='solid'>Login</Button>
+                            </Link>
+                            <Link to='/register'>
+                                <Button type='button' colorScheme='teal' variant='outline'>Register</Button>
+                            </Link>
+                        </ButtonGroup>
+                    }
                 </form>
             </div>
         </div>
