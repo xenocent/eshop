@@ -1,13 +1,13 @@
-import { Box, Button, Container, Flex, Heading, Image, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import { API_URL } from '../helper/utils';
 
 function Detail(props) {
     const location = useLocation();
     const [product,setProduct] = useState({})
+    const [qty,setQty] = useState(0)
     // const {product} = useSelector(({productReducer})=>{
     //     return {
     //         product: productReducer.products.find(x=>x.id == location.state.productId)
@@ -22,6 +22,17 @@ function Detail(props) {
             })
     }
 
+    const changeQty=(type)=>{
+        if(type)
+            setQty((prev)=>prev<product?.stock?prev+1:prev)
+        else
+            setQty((prev)=>prev>0?prev-1:0)
+    }
+
+    const addCart = ()=>{
+        
+    }
+
     useEffect(()=>{
         fetchProduct()
     },[])
@@ -30,6 +41,7 @@ function Detail(props) {
         <Flex p={10} display={"flex"} flexDirection={'row'}>
             <Box flex={2}>
                 <Image src={product.images} height={500} width={500} />
+                <Heading>{product.category}</Heading>
             </Box>
             <Box p={5} flex={3} display={"flex"} flexDirection={"column"} gap={3}>
                 <Heading>{product.name}</Heading>
@@ -38,11 +50,12 @@ function Detail(props) {
                 <Text>{product.description}</Text>
                 <Heading>{product.price?.toLocaleString('id',{ style: 'currency', currency: 'IDR' })}</Heading>
                 <Box display={"flex"} flexDirection={"row"} gap={3}>
-                    <Button> + </Button>
-                    <Text> 1 </Text>
-                    <Button> - </Button>
-                    <Button flexGrow={3}> Buy </Button>
+                    <Button onClick={()=>changeQty(true)}> + </Button>
+                    <Text> {qty} </Text>
+                    <Button onClick={()=>changeQty(false)}> - </Button>
+                    <Button flexGrow={3} onClick={()=>addCart()}> Buy </Button>
                 </Box>
+                <Text>Stock : {product.stock}</Text>
             </Box>
         </Flex> 
     </Box>);

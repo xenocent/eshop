@@ -12,6 +12,7 @@ import Axios from 'axios';
 import Products from './pages/Products';
 import { API_URL } from "./helper/utils";
 import Detail from './pages/Detail';
+import Test from './pages/test';
 function App() {
   const [loading, setLoading] = React.useState(false)
 
@@ -53,6 +54,7 @@ function App() {
                 <Route path='/register' element={<Register/>} />
                 <Route path='/products' element={<Products/>} />
                 <Route path='/detail' element={<Detail/>} />
+                <Route path='/gms' element={<Test/>} />
                 <Route path='/*' element={<Landing/>} />
           </Routes>
           <Footer />
